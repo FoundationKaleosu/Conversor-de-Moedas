@@ -16,6 +16,10 @@
       --real: #4caf50;
     }
 
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       font-family: 'MedievalSharp', cursive;
       background-color: var(--fundo);
@@ -29,7 +33,7 @@
       top: 0;
       left: 0;
       width: 100%;
-      height: 100%;
+      height: 100vh;
       background-color: #000;
       display: flex;
       flex-direction: column;
@@ -37,11 +41,11 @@
       align-items: center;
       z-index: 1000;
       text-align: center;
-      padding: 40px;
+      padding: 20px;
     }
 
     #typed-text {
-      font-size: 30px;
+      font-size: 28px;
       margin-bottom: 30px;
       max-width: 600px;
       white-space: pre-wrap;
@@ -50,17 +54,17 @@
 
     .welcome-buttons {
       display: flex;
-      gap: 20px;
       flex-wrap: wrap;
       justify-content: center;
+      gap: 15px;
     }
 
     .welcome-buttons button {
-      padding: 12px 24px;
+      padding: 12px 20px;
       font-size: 16px;
       background-color: var(--botao);
       color: #ffffff;
-      border: #A9A9A9;
+      border: 2px solid #A9A9A9;
       border-radius: 10px;
       cursor: pointer;
       box-shadow: 2px 2px 6px #b30000;
@@ -69,6 +73,13 @@
 
     .welcome-buttons button:hover {
       background-color: var(--botao-hover);
+    }
+
+    #pena-msg {
+      margin-top: 20px;
+      color: #bbb;
+      font-size: 18px;
+      display: none;
     }
 
     header {
@@ -107,11 +118,11 @@
       margin-bottom: 30px;
       box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.7);
       transition: 0.3s ease-in-out;
+      width: 100%;
     }
 
     .moeda-box:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 15px rgba(128, 0, 0, 0.8);
+      transform: scale(1.03);
     }
 
     .moeda-box h3 {
@@ -120,7 +131,7 @@
     }
 
     input {
-      width: 140px;
+      width: 80%;
       padding: 10px;
       font-size: 16px;
       border-radius: 8px;
@@ -164,38 +175,40 @@
       transition: 0.3s;
     }
 
-    #pena-msg {
-      margin-top: 20px;
-      color: #999;
-      font-size: 18px;
-      display: none;
-    }
-
     @media (max-width: 768px) {
-      header h1 {
-        font-size: 30px;
+      #typed-text {
+        font-size: 20px;
       }
 
-      #typed-text {
-        font-size: 22px;
+      .welcome-buttons button {
+        width: 100%;
+        font-size: 16px;
+      }
+
+      header h1 {
+        font-size: 26px;
+      }
+
+      h2 {
+        font-size: 20px;
       }
 
       .moeda-box h3 {
-        font-size: 20px;
+        font-size: 18px;
       }
 
       input {
         width: 100%;
+        font-size: 14px;
       }
 
-      .buttons {
-        flex-direction: column;
-        gap: 6px;
+      .buttons button {
+        width: 100%;
+        font-size: 14px;
       }
 
-      .welcome-buttons {
-        flex-direction: column;
-        gap: 10px;
+      .moeda-box {
+        padding: 15px;
       }
     }
   </style>
