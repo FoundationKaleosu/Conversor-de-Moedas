@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Banco de Eldoria</title>
+  <style>
+    :root {
+      --fundo: #1e1e1e;
+      --texto: #f0e6d2;
+      --card: #2a2a2a;
+      --borda: #d4af37;
+      --botao: #5c3d1e;
+      --botao-hover: #8c5e2e;
+      --real: #e0c97f;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--fundo);
+      color: var(--texto);
+      margin: 0;
+      padding: 0;
+    }
+
+    #welcome-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #121212;
+      color: #FFD700;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      text-align: center;
+      padding: 40px;
+    }
+
+    #typed-text {
+      font-size: 26px;
+      margin-bottom: 30px;
+      max-width: 600px;
+      white-space: pre-wrap;
+    }
+
+    #entrar-btn {
+      padding: 12px 24px;
+      font-size: 16px;
+      background-color: var(--botao);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      display: none;
+      box-shadow: 2px 2px 6px #000;
+    }
+
+    #entrar-btn:hover {
+      background-color: var(--botao-hover);
+    }
+
+    header {
+      background-color: #292421;
+      border: 4px solid var(--borda);
+      border-radius: 15px;
+      max-width: 1100px;
+      margin: 70px auto 40px auto;
+      padding: 30px;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 40px;
+      color: var(--real);
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: auto;
+      text-align: center;
+      padding: 0 20px;
+    }
+
+    h2 {
+      font-size: 25px;
+      margin-bottom: 40px;
+    }
+
+    .moeda-box {
+      background-color: var(--card);
+      border: 3px solid var(--borda);
+      border-radius: 15px;
+      padding: 20px;
+      margin-bottom: 30px;
+      box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.6);
+      transition: 0.3s;
+    }
+
+    .moeda-box:hover {
+      transform: scale(1.01);
+    }
+
+    .moeda-box h3 {
+      margin-bottom: 10px;
+      font-size: 22px;
+    }
+
+    input {
+      width: 140px;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 2px solid #444;
+      text-align: center;
+      margin-bottom: 15px;
+      background-color: #1a1a1a;
+      color: #f0e6d2;
+    }
+
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    button {
+      padding: 8px 14px;
+      border: none;
+      background-color: var(--botao);
+      color: #fff;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+      box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.6);
+    }
+
+    button:hover {
+      background-color: var(--botao-hover);
+      transform: scale(1.05);
+    }
+
+    .resultado {
+      margin-top: 10px;
+      font-weight: bold;
+      font-size: 16px;
+      color: var(--real);
+      transition: 0.3s;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="welcome-screen">
+    <div id="typed-text"></div>
+    <button id="entrar-btn" onclick="entrar()">Entrar</button>
+  </div>
+
+  <header style="display:none">
+    <h1>Banco de Eldoria</h1>
+  </header>
+
+  <div class="container" style="display:none">
+    <h2>Converta uma moeda</h2>
+    <div id="moedas-container"></div>
+  </div>
+
+  <script>
+    const texto = "Bem-vindo(a) ao Banco de Eldoria!\nA taverna está cheia de heróis e histórias...\nVocê veio retirar sua recompensa?";
+    let i = 0;
+
+    function escreverTexto() {
+      if (i < texto.length) {
+        document.getElementById("typed-text").innerHTML += texto.charAt(i);
+        i++;
+        setTimeout(escreverTexto, 50);
+      } else {
+        document.getElementById("entrar-btn").style.display = "block";
+      }
+    }
+
+    function entrar() {
+      document.getElementById("welcome-screen").style.display = "none";
+      document.querySelector("header").style.display = "block";
+      document.querySelector(".container").style.display = "block";
+    }
+
+    escreverTexto();
+
+    const taxas = {
+      cobre: 1,
+      bronze: 10,
+      prata: 500,
+      ouro: 30000,
+      platina: 2400000,
+      preciosa: 240000000
+    };
+
+    const pesos = {
+      cobre: 5,
+      bronze: 16,
+      prata: 22,
+      ouro: 35,
+      platina: 80,
+      preciosa: 100
+    };
+
+    const nomes = {
+      cobre: "🟤 Peça de Cobre 🟤",
+      bronze: "🟠 Peça de Bronze 🟠",
+      prata: "⚪️ Peça de Prata ⚪️",
+      ouro: "🟡 Peça de Ouro 🟡",
+      platina: "🔷 Peça de Platina 🔷",
+      preciosa: "💎 Pedra Preciosa 💎"
+    };
+
+    const cobreParaReal = 1.50;
+    const cobreParaDolar = 15.00;
+
+    const container = document.getElementById("moedas-container");
+
+    for (let moeda in taxas) {
+      const sec = document.createElement("div");
+      sec.classList.add("moeda-box");
+
+      const botoes = Object.keys(taxas)
+        .filter(m => m !== moeda && m !== "cobre")
+        .map(destino =>
+          `<button onclick="converterIndividual('${moeda}', '${destino}')">${nomes[destino]}</button>`
+        ).join('');
+
+      sec.innerHTML = `
+        <h3>${nomes[moeda]}</h3>
+        <input type="number" id="${moeda}" value="1" placeholder="Digite a quantidade" />
+        <div class="buttons">${botoes}</div>
+        <div id="resultado-${moeda}" class="resultado"></div>
+      `;
+
+      container.appendChild(sec);
+    }
+
+    function converterIndividual(origem, destino) {
+      const quantidade = parseFloat(document.getElementById(origem).value);
+      if (isNaN(quantidade)) return;
+
+      const cobreTotal = quantidade * taxas[origem];
+      const resultadoConvertido = cobreTotal / taxas[destino];
+      const valorEmReais = cobreTotal * cobreParaReal;
+      const valorEmDolar = cobreTotal * cobreParaDolar;
+      const pesoKg = (quantidade * pesos[origem]) / 1000;
+
+      const destinoDiv = document.getElementById("resultado-" + origem);
+      destinoDiv.innerHTML = `
+        ${quantidade} ${nomes[origem]} = ${resultadoConvertido.toFixed(2)} ${nomes[destino]}<br>
+        💰 Valor em Real: <strong>R$ ${valorEmReais.toFixed(2)}</strong><br>
+        💲 Valor em Dólar: <strong>US$ ${valorEmDolar.toFixed(2)}</strong><br>
+        ⚖️ Peso Total: <strong>${pesoKg.toFixed(2)} kg</strong>
+      `;
+    }
+  </script>
+
+</body>
+</html>
