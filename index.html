@@ -2,21 +2,23 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Banco de Eldoria</title>
+  <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
   <style>
     :root {
-      --fundo: #1e1e1e;
-      --texto: #f0e6d2;
-      --card: #2a2a2a;
-      --borda: #d4af37;
-      --botao: #5c3d1e;
-      --botao-hover: #8c5e2e;
-      --real: #e0c97f;
+      --fundo: #000000;
+      --texto: #ffffff;
+      --card: #333333;
+      --borda: #FFD700;
+      --botao: #800000;
+      --botao-hover: #b30000;
+      --real: #4caf50;
     }
 
     body {
-      font-family: 'Poppins', sans-serif;
-      background: var(--fundo);
+      font-family: 'MedievalSharp', cursive;
+      background-color: var(--fundo);
       color: var(--texto);
       margin: 0;
       padding: 0;
@@ -28,8 +30,8 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: #121212;
-      color: #FFD700;
+      background-color: #000000;
+      color: #b30000;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -40,30 +42,36 @@
     }
 
     #typed-text {
-      font-size: 26px;
-      margin-bottom: 30px;
-      max-width: 600px;
-      white-space: pre-wrap;
+  font-size: 30px;
+  margin-bottom: 30px;
+  max-width: 600px;
+  white-space: pre-wrap;
+  color: white;
     }
 
-    #entrar-btn {
+    #botoes-boas-vindas {
+      display: none;
+      gap: 20px;
+    }
+
+    #botoes-boas-vindas button {
       padding: 12px 24px;
       font-size: 16px;
       background-color: var(--botao);
-      color: white;
+      color: #ffffff;
       border: none;
       border-radius: 10px;
       cursor: pointer;
-      display: none;
-      box-shadow: 2px 2px 6px #000;
+      box-shadow: 2px 2px 6px #b30000;
+      transition: background-color 0.3s ease;
     }
 
-    #entrar-btn:hover {
+    #botoes-boas-vindas button:hover {
       background-color: var(--botao-hover);
     }
 
     header {
-      background-color: #292421;
+      background-color: #000;
       border: 4px solid var(--borda);
       border-radius: 15px;
       max-width: 1100px;
@@ -75,7 +83,7 @@
     header h1 {
       margin: 0;
       font-size: 40px;
-      color: var(--real);
+      color: var(--texto);
     }
 
     .container {
@@ -96,12 +104,13 @@
       border-radius: 15px;
       padding: 20px;
       margin-bottom: 30px;
-      box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.6);
-      transition: 0.3s;
+      box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.7);
+      transition: 0.3s ease-in-out;
     }
 
     .moeda-box:hover {
-      transform: scale(1.01);
+      transform: scale(1.05);
+      box-shadow: 0 0 15px rgba(128, 0, 0, 0.8);
     }
 
     .moeda-box h3 {
@@ -153,26 +162,43 @@
       color: var(--real);
       transition: 0.3s;
     }
+
+    @media (max-width: 600px) {
+      input {
+        width: 100%;
+      }
+      .buttons {
+        flex-direction: column;
+        gap: 6px;
+      }
+    }
   </style>
 </head>
 <body>
 
+  <!-- Sons -->
+  <audio id="som-entrada" src="sons/taverna.mp3"></audio>
+  <audio id="som-moeda" src="sons/moeda.mp3"></audio>
+
   <div id="welcome-screen">
     <div id="typed-text"></div>
-    <button id="entrar-btn" onclick="entrar()">Entrar</button>
+    <div id="botoes-boas-vindas">
+      <button onclick="entrar()">Sim</button>
+      <button onclick="naoEntrar()">Não</button>
+    </div>
   </div>
 
   <header style="display:none">
-    <h1>Banco de Eldoria</h1>
+    <h1>Conversor Multiversal</h1>
   </header>
 
   <div class="container" style="display:none">
-    <h2>Converta uma moeda</h2>
+    <h2>Converta sua moeda aqui</h2>
     <div id="moedas-container"></div>
   </div>
 
   <script>
-    const texto = "Bem-vindo(a) ao Banco de Eldoria!\nA taverna está cheia de heróis e histórias...\nVocê veio retirar sua recompensa?";
+    const texto = "Bem-vindo(a), caro viajante!\nEm nosso Banco você pode converter suas moedas de forma segura e eficiente...\nDeseja prosseguir com a conversão?";
     let i = 0;
 
     function escreverTexto() {
@@ -181,7 +207,7 @@
         i++;
         setTimeout(escreverTexto, 50);
       } else {
-        document.getElementById("entrar-btn").style.display = "block";
+        document.getElementById("botoes-boas-vindas").style.display = "flex";
       }
     }
 
@@ -189,6 +215,12 @@
       document.getElementById("welcome-screen").style.display = "none";
       document.querySelector("header").style.display = "block";
       document.querySelector(".container").style.display = "block";
+      document.getElementById("som-entrada").play();
+    }
+
+    function naoEntrar() {
+      document.getElementById("typed-text").innerHTML = "Ah, que pena então...";
+      document.getElementById("botoes-boas-vindas").style.display = "none";
     }
 
     escreverTexto();
@@ -221,21 +253,23 @@
     };
 
     const cobreParaReal = 1.50;
-    const cobreParaDolar = 15.00;
+    const cobreParaDolar = 10.50;
 
     const container = document.getElementById("moedas-container");
 
-    for (let moeda in taxas) {
+    const ordemMoedas = ["cobre", "bronze", "prata", "ouro", "platina", "preciosa"];
+
+    ordemMoedas.forEach(moeda => {
       const sec = document.createElement("div");
       sec.classList.add("moeda-box");
 
-      const botoes = Object.keys(taxas)
-        .filter(m => m !== moeda && m !== "cobre")
+      const botoes = ordemMoedas
+        .filter(m => m !== moeda)
         .map(destino =>
           `<button onclick="converterIndividual('${moeda}', '${destino}')">${nomes[destino]}</button>`
         ).join('');
 
-      sec.innerHTML = `
+      sec.innerHTML = ` 
         <h3>${nomes[moeda]}</h3>
         <input type="number" id="${moeda}" value="1" placeholder="Digite a quantidade" />
         <div class="buttons">${botoes}</div>
@@ -243,7 +277,7 @@
       `;
 
       container.appendChild(sec);
-    }
+    });
 
     function converterIndividual(origem, destino) {
       const quantidade = parseFloat(document.getElementById(origem).value);
@@ -253,15 +287,24 @@
       const resultadoConvertido = cobreTotal / taxas[destino];
       const valorEmReais = cobreTotal * cobreParaReal;
       const valorEmDolar = cobreTotal * cobreParaDolar;
-      const pesoKg = (quantidade * pesos[origem]) / 1000;
+      const pesoEmGramas = quantidade * pesos[origem];
+      const pesoEmKg = pesoEmGramas / 1000;
+      const pesoFinal = pesoEmKg >= 1 ? `${pesoEmKg.toFixed(2)} kg` : `${pesoEmGramas.toFixed(2)} g`;
 
       const destinoDiv = document.getElementById("resultado-" + origem);
       destinoDiv.innerHTML = `
         ${quantidade} ${nomes[origem]} = ${resultadoConvertido.toFixed(2)} ${nomes[destino]}<br>
         💰 Valor em Real: <strong>R$ ${valorEmReais.toFixed(2)}</strong><br>
         💲 Valor em Dólar: <strong>US$ ${valorEmDolar.toFixed(2)}</strong><br>
-        ⚖️ Peso Total: <strong>${pesoKg.toFixed(2)} kg</strong>
+        ⚖️ Peso Total: <strong>${pesoFinal}</strong>
       `;
+      tocarSomMoeda();
+    }
+
+    function tocarSomMoeda() {
+      const som = document.getElementById("som-moeda");
+      som.currentTime = 0;
+      som.play();
     }
   </script>
 
